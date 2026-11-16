@@ -1,0 +1,412 @@
+.app {
+  max-width: 960px;
+  margin: auto;
+  padding: 0 20px 40px;
+  color: #111827;
+  background: #f5f6f8;
+  min-height: 100svh;
+}
+.app *,
+.recorder * {
+  box-sizing: border-box;
+}
+.app button,
+.recorder button {
+  font: inherit;
+  min-height: 48px;
+  border: 0;
+  background: #316de6;
+  color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.app button:disabled,
+.recorder button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.app button:focus-visible,
+.app summary:focus-visible,
+.recorder button:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
+}
+.app .secondary,
+.recorder .secondary {
+  background: white;
+  border: 1px solid #cdd3dd;
+  color: #111827;
+}
+.app .link {
+  background: transparent;
+  color: #2459c3;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 8px 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+}
+.heading {
+  margin: 28px 0;
+}
+.heading h1 {
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+}
+.heading p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #5e6675;
+}
+.app h2 {
+  font-size: 21px;
+  font-weight: 650;
+  margin: 0 0 16px;
+}
+.app h2 span {
+  color: #2459c3;
+}
+.app h3 {
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.app p {
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 6px 0 12px;
+  overflow-wrap: anywhere;
+}
+.app .note {
+  font-size: 13px;
+  color: #5e6675;
+  margin: 14px 0 0;
+}
+.intake,
+.process {
+  background: #fff;
+  border: 1px solid #e2e5eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.intake strong {
+  font-size: 18px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+}
+.actions > button {
+  flex: 1;
+  min-width: 140px;
+}
+.error {
+  background: #fbede7;
+  color: #893624;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  line-height: 1.6;
+}
+.source {
+  margin-bottom: 24px;
+}
+.source > video {
+  width: 100%;
+  max-height: 420px;
+  background: #111827;
+  display: block;
+  border-radius: 8px;
+}
+.clipTabs {
+  display: flex;
+  gap: 8px;
+  overflow: auto;
+  margin-bottom: 12px;
+}
+.clipTabs button {
+  background: transparent;
+  color: #111827;
+  border: 1px solid #cdd3dd;
+  font-size: 14px;
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clipTabs button[aria-pressed="true"] {
+  background: #edf3ff;
+  border-color: #316de6;
+  color: #2459c3;
+}
+.sourceActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: #5e6675;
+}
+.counts {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 12px;
+}
+.counts strong {
+  display: block;
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+.counts span {
+  font-size: 13px;
+  color: #5e6675;
+}
+.process > button {
+  width: 100%;
+  margin-top: 8px;
+}
+.timeline {
+  margin-bottom: 32px;
+}
+.app summary {
+  min-height: 48px;
+  padding: 12px 0;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.timeline article {
+  border-top: 1px solid #e2e5eb;
+  padding: 12px 0;
+}
+.timeline img {
+  width: 100%;
+  height: auto;
+}
+.gaps,
+.inventory {
+  margin: 32px 0;
+}
+.gaps > article {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid #e2e5eb;
+}
+.gapPhoto {
+  align-self: start;
+}
+.gapPhoto > p {
+  font-size: 12px;
+  background: #e2e5eb;
+  padding: 10px;
+}
+.app small {
+  font-size: 12px;
+  color: #5e6675;
+  font-weight: 400;
+}
+.app h3 small {
+  display: block;
+  margin-top: 4px;
+}
+.app .instruction {
+  font-weight: 600;
+  color: #2457aa;
+}
+.gaps .actions {
+  margin-top: 8px;
+}
+.gaps .actions > button {
+  min-width: 100px;
+}
+.inventory > details {
+  border-top: 1px solid #e2e5eb;
+}
+.inventory summary small {
+  display: block;
+}
+.evidence {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding-bottom: 16px;
+}
+.evidence img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  background: #e2e5eb;
+}
+.evidence p {
+  font-size: 13px;
+}
+.export {
+  padding-top: 24px;
+  border-top: 1px solid #e2e5eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.recorder {
+  height: 100dvh;
+  background: #111827;
+  color: white;
+  display: grid;
+  grid-template-rows: 48px minmax(180px, 1fr) auto;
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+.recorder header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+.recorder video {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+}
+.recordControls {
+  padding: 14px 16px;
+  background: #f5f6f8;
+  color: #111827;
+  max-height: 48dvh;
+  overflow: auto;
+}
+.recordControls p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+.recordControls button {
+  width: 100%;
+  margin-top: 8px;
+}
+.recordControls [role="alert"] {
+  color: #893624;
+}
+.app ::selection {
+  background: #dce9ff;
+}
+.app {
+  scrollbar-color: #b8bec9 #f5f6f8;
+}
+@media (min-width: 700px) {
+  .app {
+    padding-inline: 32px;
+  }
+  .intake {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .intake .note {
+    grid-column: 1/-1;
+  }
+  .evidence {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gaps > article {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .source > video {
+    max-height: 520px;
+  }
+}
+@media (max-width: 360px) {
+  .app {
+    padding-inline: 14px;
+  }
+  .counts {
+    gap: 14px;
+  }
+  .counts strong {
+    font-size: 21px;
+  }
+  .gaps > article {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .evidence {
+    grid-template-columns: 1fr;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .recorder {
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: 48px minmax(0, 1fr);
+  }
+  .recorder header {
+    grid-column: 1/-1;
+  }
+  .recordControls {
+    max-height: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app * {
+    scroll-behavior: auto !important;
+  }
+}
+.camera {
+  position: relative;
+  min-height: 0;
+}
+.camera video {
+  display: block;
+}
+.baseline {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 64px;
+  margin: 0;
+  background: #111827dd;
+  padding: 4px;
+  border: 1px solid #ffffff66;
+  border-radius: 5px;
+}
+.baseline img {
+  width: 100%;
+  max-height: 84px;
+  object-fit: contain;
+}
+.baseline figcaption {
+  font-size: 11px;
+  text-align: center;
+  color: white;
+}
+.direction {
+  display: flex;
+  gap: 8px;
+}
+.direction button {
+  flex: 1;
+  background: white;
+  border: 1px solid #cdd3dd;
+  color: #111827;
+}
+.direction button[aria-pressed="true"] {
+  border: 2px solid #316de6;
+  background: #edf3ff;
+  color: #2459c3;
+}
+
+.app,
+.recorder {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR",
+    Arial, sans-serif;
+}

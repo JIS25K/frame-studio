@@ -3,16 +3,15 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
-import { MAX_IMAGES, briefSchema, fieldLabels, shotFields, type Brief, type Proposal, type Plan } from '@/lib/prompt-engine/schema';
+import { MAX_IMAGES, MAX_REQUEST_LENGTH, MAX_SHOTS, inputError, briefSchema, fieldLabels, shotFields, type Brief, type Proposal, type Plan } from '@/lib/prompt-engine/schema';
 import { compilePrompts, makePackage } from '@/lib/prompt-engine/engine';
 import { emptyWorkspace, type Workspace } from '@/lib/prompt-engine/workspace';
 import { download, loadWorkspace, prepareImage, saveWorkspace, loadHandoff, prepareModelBrief } from '@/lib/prompt-engine/browser';
 import { importHandoff, needsImportChoice, type CaptureHandoff } from '@/lib/prompt-engine/handoff';
-import { getSessionCode, setSessionCode } from '@/lib/prompt-engine/session';
 import StudioNav from '../studio-nav';
 import styles from './studio.module.css';
 
-type Connection = { configured: boolean; accessRequired: boolean };
+type Connection = { configured: boolean; };
 function Arrow() { return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" /></svg>; }
 function Plus() { return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16" /></svg>; }
 async function readConnection(): Promise<Connection> {
@@ -26,8 +25,6 @@ export default function PromptStudio() {
   const [pendingImport, setPendingImport] = useState<CaptureHandoff | null>(null);
   const [ready, setReady] = useState(false);
   const [connection, setConnection] = useState<Connection | null>(null);
-  const [code, setCode] = useState('');
-  const [codePanelOpen, setCodePanelOpen] = useState(true);
   const [busy, setBusy] = useState('');
   const [requestPending, setRequestPending] = useState(false);
   const [error, setError] = useState('');
@@ -48,7 +45,7 @@ export default function PromptStudio() {
   }
   useEffect(() => {
     let active = true;
-    setCode(getSessionCode()); setCodePanelOpen(!getSessionCode());
+
     void (async () => {
       let saved: Workspace | null = null;
       try { saved = await loadWorkspace(); if (active && saved) { setWork(saved); setNotice(''); } }
@@ -101,18 +98,22 @@ export default function PromptStudio() {
     controller.current = new AbortController();
     setRequestPending(true);
     try {
-      const response = await fetch('/api/prompt/plan', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-prompt-code': code }, body: JSON.stringify(payload), signal: AbortSignal.any([controller.current.signal, AbortSignal.timeout(60_000)]) });
-      const result = await response.json();
+      const response = await fetch('/api/prompt/plan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.any([controller.current.signal, AbortSignal.timeout(175_000)]) });
+      const result = await response.json().catch(() => ({ error: '서버 응답을 읽지 못했어요. 잠시 후 다시 시도해주세요. 입력은 유지됩니다.' }));
       if (!response.ok) throw new Error(result.error || '요청을 완료하지 못했어요.');
       return result;
+    } catch (error) {
+      if (error instanceof Error && error.name === 'TimeoutError') throw new Error('응답 시간이 길어져 중단했어요. 입력은 유지됩니다. 다시 제안받기를 눌러주세요.');
+      if (error instanceof TypeError) throw new Error('서버에 연결하지 못했어요. 입력은 유지됩니다. 연결을 확인한 뒤 다시 시도해주세요.');
+      throw error;
     } finally { setRequestPending(false); controller.current = null; }
   }
   async function propose(e?: FormEvent) {
     e?.preventDefault(); if (lock.current) return;
     const checked = briefSchema.safeParse(brief);
-    if (!checked.success) { setError('제품 사진 한 장과 세 글자 이상의 요청을 넣어주세요.'); return; }
+    if (!checked.success) { setError(inputError(checked.error)); return; }
     if (!connection?.configured) { setError('AI 연결이 필요해요. 아래 연결 안내를 확인해주세요.'); return; }
-    const nextAnswers = [...work.answers, ...(proposal?.questions || []).map(q => ({ question: q.question, answer: (answers[q.id] || '').trim() }))];
+    const nextAnswers = [...work.answers, ...(proposal?.questions || []).map(q => ({ question: `${q.question} ${q.reason}`.slice(0, 500), answer: (answers[q.id] || '').trim() }))];
     if (nextAnswers.some(a => !a.answer)) { setError('확인이 필요한 항목을 선택하거나 짧게 답해주세요.'); return; }
     if (nextAnswers.length > 6) { setError('선택 내용을 원래 요청에 넣어 다시 시작해주세요.'); return; }
     lock.current = true; setBusy('사진을 읽고 연출을 구체화하고 있어요'); setError(''); setNotice('');
@@ -168,7 +169,7 @@ export default function PromptStudio() {
           {notice && <p role="status" className={styles.notice}>{notice}</p>}
           {busy && <div role="status" className={styles.busy}><span className={styles.spinner} aria-hidden="true" />{busy}{requestPending && <button type="button" onClick={() => controller.current?.abort()}>취소</button>}</div>}
 
-          {work.captureSource && <div className={styles.captureReceipt}><strong>{work.captureSource.demo ? '체험 사진 연결됨' : '촬영 사진 연결됨'} · {brief.images.filter(i => work.captureSource?.imageIds.includes(i.id)).length}장</strong>{work.captureSource.unresolved.length > 0 && <details><summary>촬영에서 확인이 남은 부분 {work.captureSource.unresolved.length}건</summary><ul>{work.captureSource.unresolved.map((item, i) => <li key={i}>{item}</li>)}</ul><p>필요한 부분이 보이는지 확인해주세요.</p></details>}</div>}
+          {work.captureSource && <div className={styles.captureReceipt}><strong>{brief.videoContext ? '영상 관찰 정보 연결됨' : work.captureSource.demo ? '체험 사진 연결됨' : '촬영 사진 연결됨'} · {brief.images.filter(i => work.captureSource?.imageIds.includes(i.id)).length}장</strong>{work.captureSource.unresolved.length > 0 && <details><summary>촬영에서 확인이 남은 부분 {work.captureSource.unresolved.length}건</summary><ul>{work.captureSource.unresolved.map((item, i) => <li key={i}>{item}</li>)}</ul><p>필요한 부분이 보이는지 확인해주세요.</p></details>}</div>}
           {phase === 'brief' && <form onSubmit={propose}>
             <fieldset disabled={!!busy} className={styles.fieldset}>
               <div className={styles.labelRow}><h2>제품 사진</h2><span>최대 24장</span></div>
@@ -176,13 +177,12 @@ export default function PromptStudio() {
                 <label className={styles.upload}><Plus /><span>사진 추가</span><input aria-label="제품 사진 추가" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={e => void addImages(e, 'product')} /></label></div>
               {!brief.images.length && <button className={styles.example} type="button" onClick={example}>예시 제품 불러오기 <Arrow /></button>}
               <label className={styles.requestLabel} htmlFor="brief-request">원하는 느낌</label>
-              <textarea id="brief-request" className={styles.request} rows={4} maxLength={2000} value={brief.request} onChange={e => changeBrief({ request: e.target.value })} placeholder="예: 촉촉하고 고급스러운 세럼 광고 사진. 제품이 잘 보였으면 좋겠어요." required minLength={3} />
+              <textarea id="brief-request" className={styles.request} rows={4} maxLength={MAX_REQUEST_LENGTH} value={brief.request} onChange={e => changeBrief({ request: e.target.value })} placeholder="예: 촉촉하고 고급스러운 세럼 광고 사진. 제품이 잘 보였으면 좋겠어요." required minLength={3} />
               <details className={styles.reference}><summary>연출 레퍼런스 <span>선택</span></summary><p>배경·구도·조명을 참고할 사진을 추가하세요.</p><div className={styles.images}>{brief.images.filter(i => i.role === 'reference').map(i => <figure key={i.id}><img src={i.data} alt={`연출 레퍼런스: ${i.name}`} /><figcaption>{i.name}</figcaption><button type="button" aria-label={`${i.name} 삭제`} onClick={() => changeBrief({ images: brief.images.filter(x => x.id !== i.id) })}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg></button></figure>)}<label className={styles.upload}><Plus /><span>레퍼런스 추가</span><input aria-label="레퍼런스 사진 추가" type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={e => void addImages(e, 'reference')} /></label></div></details>
-              <div className={styles.settings}><label>만들 장수<select value={brief.count} onChange={e => changeBrief({ count: Number(e.target.value) })}>{[1, 2, 3, 4].map(n => <option value={n} key={n}>{n}장</option>)}</select></label><label>화면 비율<select value={brief.ratio} onChange={e => changeBrief({ ratio: e.target.value as Brief['ratio'] })}><option value="1:1">1:1 · 정사각형</option><option value="4:5">4:5 · 세로형</option><option value="9:16">9:16 · 긴 세로형</option></select></label></div>
+              <div className={styles.settings}><label>만들 장수<select value={brief.count} onChange={e => changeBrief({ count: Number(e.target.value) })}>{Array.from({ length: MAX_SHOTS }, (_, i) => i + 1).map(n => <option value={n} key={n}>{n}장</option>)}</select></label><label>화면 비율<select value={brief.ratio} onChange={e => changeBrief({ ratio: e.target.value as Brief['ratio'] })}><option value="1:1">1:1 · 정사각형</option><option value="4:5">4:5 · 세로형</option><option value="9:16">9:16 · 긴 세로형</option></select></label></div>
             </fieldset>
-            {(!connection?.configured || connection.accessRequired) && <div className={styles.connection}>
+            {(!connection?.configured) && <div className={styles.connection}>
               {!connection?.configured && <p>AI 연결 {connection === null ? '확인 중' : '준비 중'}. 연결 확인을 다시 눌러주세요.</p>}
-              {connection?.accessRequired && <details open={codePanelOpen} onToggle={e => setCodePanelOpen(e.currentTarget.open)}><summary>{code ? '접근 코드 연결됨 · 수정' : '접근 코드 입력'}</summary><label htmlFor="access-code">접근 코드<input id="access-code" type="password" autoComplete="off" value={code} onChange={e => { setCode(e.target.value); setSessionCode(e.target.value); }} /></label></details>}
               {!connection?.configured && <button type="button" className={styles.textButton} onClick={refreshConnection}>연결 다시 확인</button>}
             </div>}
             <button className={styles.primary} disabled={!!busy || !connection?.configured || !brief.images.some(i => i.role === 'product') || brief.request.trim().length < 3} type="submit">연출 제안받기 <Arrow /></button>
@@ -212,7 +212,7 @@ export default function PromptStudio() {
         </main>
         {phase !== 'brief' && <aside className={styles.aside} aria-label="제품과 기획 기준">
           <div className={styles.asideInner}>{brief.images.some(i => i.role === 'product') && <><div className={styles.productPhoto}><img src={brief.images.find(i => i.role === 'product')!.data} alt="기준이 되는 제품 원본" /><span>제품 원본</span></div><h2>{proposal?.productName || '제품 사진'}</h2></>}
-            {proposal && <><div className={styles.identity}><h3>유지할 제품 특징</h3><ul>{proposal.identity.map((f, i) => <li key={i}>{f.text}</li>)}</ul></div>{!!proposal.references.length && <div className={styles.identity}><h3>레퍼런스에서 가져올 것</h3>{proposal.references.map(r => <p key={r.imageId}>{r.use}<small>제외: {r.exclude}</small></p>)}</div>}{!!proposal.unknowns.length && <details className={styles.unknowns}><summary>사진만으로 알 수 없는 정보</summary><ul>{proposal.unknowns.map((u, i) => <li key={i}>{u}</li>)}</ul></details>}</>}
+            {proposal && <>{!!proposal.requirements?.length && <div className={styles.identity}><h3>꼭 반영할 요청</h3><ul>{proposal.requirements.map(r => <li key={r.id}>{r.text}</li>)}</ul></div>}<div className={styles.identity}><h3>유지할 제품 특징</h3><ul>{proposal.identity.map((f, i) => <li key={i}>{f.text}</li>)}</ul></div>{!!proposal.references.length && <div className={styles.identity}><h3>레퍼런스에서 가져올 것</h3>{proposal.references.map(r => <p key={r.imageId}>{r.use}<small>제외: {r.exclude}</small></p>)}</div>}{!!proposal.unknowns.length && <details className={styles.unknowns}><summary>사진만으로 알 수 없는 정보</summary><ul>{proposal.unknowns.map((u, i) => <li key={i}>{u}</li>)}</ul></details>}</>}
             <div className={styles.original}><h3>처음 요청</h3><p>{brief.request}</p>{work.answers.map((a, i) => <p key={i}>추가 확인: {a.answer}</p>)}<span>{brief.count}장 · {brief.ratio}</span></div>
           </div>
         </aside>}

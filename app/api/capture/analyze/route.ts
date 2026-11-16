@@ -1,4 +1,3 @@
-import { timingSafeEqual } from 'node:crypto';
 import { generateText, Output } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { z } from 'zod';
@@ -8,20 +7,13 @@ export const runtime = 'nodejs';
 export const maxDuration = 30;
 const image = z.string().max(650_000).regex(/^data:image\/jpeg;base64,[A-Za-z0-9+/]+=*$/);
 const requestSchema = z.object({ spec: specSchema, targetId: z.string().max(40), frame: image, reference: image.nullable(), context: z.array(z.object({ targetId: z.string().max(40), frame: image })).max(4).default([]) });
-// Best-effort per-instance throttle. The demo access code is the primary access boundary.
+// Best-effort per-instance throttle. Requests also have origin, payload-size and timeout checks.
 const buckets = new Map<string, { count: number; until: number }>();
 function fail(message: string, status: number) { return Response.json({ error: message }, { status, headers: { 'Cache-Control': 'no-store' } }); }
 export async function POST(request: Request) {
   const origin = request.headers.get('origin');
   if (origin && origin !== new URL(request.url).origin) return fail('이 촬영 앱에서 다시 요청해주세요.', 403);
   if (!process.env.OPENAI_API_KEY) return fail('AI API 키가 아직 연결되지 않았어요. 기본 촬영을 이용하거나 관리자에게 알려주세요.', 503);
-  const code = process.env.CAPTURE_ACCESS_CODE;
-  if (process.env.VERCEL && !code) return fail('데모 접근 코드가 아직 설정되지 않았어요.', 503);
-  if (code) {
-    const supplied = request.headers.get('x-capture-code') || '';
-    const a = Buffer.from(supplied), b = Buffer.from(code);
-    if (a.length !== b.length || !timingSafeEqual(a, b)) return fail('데모 접근 코드를 확인해주세요.', 401);
-  }
   if (Number(request.headers.get('content-length') || 0) > 4_000_000) return fail('사진 크기가 너무 커요.', 413);
   try {
     if (!request.body) return fail('촬영 프레임이 없어요.', 400);

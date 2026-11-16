@@ -1,21 +1,13 @@
-import { timingSafeEqual } from 'node:crypto';
 
 export function fail(error: string, status: number) {
   return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } });
 }
-export function accessCode() { return process.env.PROMPT_ACCESS_CODE || process.env.CAPTURE_ACCESS_CODE; }
 export function checkAccess(request: Request) {
   const origin = request.headers.get('origin');
   // Next's local Request URL may use localhost even when the visible host is 127.0.0.1.
   const url = new URL(request.url);
   const expectedOrigin = `${url.protocol}//${request.headers.get('host') || url.host}`;
   if (origin && origin !== expectedOrigin) return fail('연출 기획 화면에서 다시 요청해주세요.', 403);
-  const code = accessCode();
-  if (process.env.VERCEL && !code) return fail('서버의 접근 코드 설정이 필요해요.', 503);
-  if (code) {
-    const a = Buffer.from(request.headers.get('x-prompt-code') || ''), b = Buffer.from(code);
-    if (a.length !== b.length || !timingSafeEqual(a, b)) return fail('접근 코드를 확인해주세요.', 401);
-  }
   return null;
 }
 export async function readBody(request: Request) {

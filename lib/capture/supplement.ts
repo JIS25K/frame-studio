@@ -1,5 +1,6 @@
+import { validRegionBox, type RegionBox } from './navigation.ts';
 import type { Observation } from './observation';
-import type { Quality } from './quality';
+import type { Quality } from './quality.ts';
 
 export type CaptureFrame = { image: string; quality: Quality; at: number };
 export type SupplementKind = 'repeated' | 'blurred' | 'occluded';
@@ -8,6 +9,7 @@ export type Supplement = {
   kind: SupplementKind;
   region: string;
   reason: string;
+  box?: RegionBox | null;
   source: 'local-quality' | 'model';
   status: 'open' | 'improved' | 'deferred';
   anchor: CaptureFrame;
@@ -22,12 +24,12 @@ export function localBlur(quality: Quality) {
   return quality.sharpness < 45 && quality.brightness >= 38 && quality.brightness <= 246 && quality.dark <= .65 && quality.light <= .45;
 }
 
-export function openSupplement(tasks: Supplement[], kind: SupplementKind, frame: CaptureFrame, region: string, reason: string, source: Supplement['source']): Supplement[] {
+export function openSupplement(tasks: Supplement[], kind: SupplementKind, frame: CaptureFrame, region: string, reason: string, source: Supplement['source'], box?: RegionBox | null): Supplement[] {
   if (tasks.length >= SUPPLEMENT_POLICY.maxTasks) return tasks;
   // A local blur episode cannot identify a region. Keep its original anchor until reviewed.
   if (source === 'local-quality' && tasks.some(t => t.status === 'open' && t.kind === 'blurred')) return tasks;
   if (tasks.some(t => t.status === 'open' && t.kind === kind && t.region === region)) return tasks;
-  return [...tasks, { id: `supplement-${tasks.length + 1}`, kind, region, reason, source, status: 'open', anchor: frame, support: null, events: [{ at: frame.at, event: 'opened', reason }] }];
+  return [...tasks, { id: `supplement-${tasks.length + 1}`, kind, region, reason, source, box: validRegionBox(box), status: 'open', anchor: frame, support: null, events: [{ at: frame.at, event: 'opened', reason }] }];
 }
 
 export function nextSupplement(tasks: Supplement[]) {
@@ -38,7 +40,7 @@ export function nextSupplement(tasks: Supplement[]) {
 export function supplementGuidance(task: Supplement) {
   if (task.kind === 'repeated') return '같은 쪽이 반복돼 보여요. 제품을 같은 방향으로 조금 더 천천히 돌려주세요.';
   if (task.kind === 'blurred') return '작은 사진의 장면을 다시 보여주세요. 초점을 맞추고 천천히 움직여주세요.';
-  return `${task.region || '가려진 부분'}이 보이도록 잡는 위치나 기울기를 조금 바꿔주세요.`;
+  return task.box ? '표시한 부분이 보이도록 손 위치나 기울기를 조금 바꿔주세요.' : '사진의 장면을 다시 보여주세요. 가린 손을 옮겨주세요.';
 }
 
 export function applySupplementObservation(tasks: Supplement[], frame: CaptureFrame, observation: Observation, targetId: string | null, localUsable: boolean) {
@@ -66,7 +68,7 @@ export function applySupplementObservation(tasks: Supplement[], frame: CaptureFr
     const grounded = inspection.evidence.trim() && inspection.region.trim()
       && (kind !== 'repeated' || (observation.sameProduct === 'yes' && !observation.addsInformation && observation.usable));
     const sameOpenTarget = target && kind === target.kind && inspection.targetCheck === 'still_blocked';
-    if (grounded && !sameOpenTarget) next = openSupplement(next, kind, frame, inspection.region, inspection.evidence, 'model');
+    if (grounded && !sameOpenTarget) next = openSupplement(next, kind, frame, inspection.region, inspection.evidence, 'model', inspection.box);
   }
   return { tasks: next, improvedId };
 }

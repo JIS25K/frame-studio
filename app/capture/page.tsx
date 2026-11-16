@@ -1,3 +1,3 @@
-import Capture from './orbit';
-export const metadata = { title: '제품 촬영 스튜디오', description: '제품을 자연스럽게 돌리면 새로운 정보가 담긴 장면을 자동으로 모아요.' };
-export default function Page() { return <Capture />; }
+import WholeVideoStudio from './video-studio';
+export const metadata={title:'전체 영상으로 제품 관찰',description:'전체 영상의 연속 프레임과 원본 세부 근거를 분석하고 부족한 부분을 보충 촬영합니다.'};
+export default function Page(){return <WholeVideoStudio/>;}

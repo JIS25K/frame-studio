@@ -14,7 +14,7 @@ test('input requires an original product and rejects external image URLs, duplic
   assert.equal(briefSchema.safeParse({ ...brief, images: brief.images.slice(1) }).success, false);
   assert.equal(briefSchema.safeParse({ ...brief, images: [...brief.images, brief.images[0]] }).success, false);
   assert.equal(briefSchema.safeParse({ ...brief, images: [{ ...brief.images[0], data: 'https://example.com/photo.jpg' }] }).success, false);
-  assert.equal(briefSchema.safeParse({ ...brief, count: 10 }).success, false);
+  assert.equal(briefSchema.safeParse({ ...brief, count: 13 }).success, false);
 });
 test('proposal validates original/reference roles and exact requested shot count', () => {
   assert.doesNotThrow(() => validateProposal(brief, proposal));

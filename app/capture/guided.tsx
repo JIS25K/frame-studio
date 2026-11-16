@@ -10,7 +10,7 @@ import g from './guided.module.css';
 
 const MAX_SECONDS = 180;
 type Evidence = { targetId: string; at: number; image: string; quality: Quality; verdict: Verdict; model: string; latencyMs: number; accepted: boolean; qualityHeldMs: number; invalidatedDuringRequest: boolean };
-type Connection = { configured: boolean; accessRequired: boolean; model: string };
+type Connection = { configured: boolean; model: string };
 const viewNames = { front: '정면', side: '옆면', oblique: '사선', back: '후면', top: '윗부분', bottom: '바닥', right: '첫 번째 측면', left: '반대쪽 측면', detail: '부분 확대', unknown: '방향 불확실' };
 function save(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; a.click();
@@ -33,7 +33,7 @@ export default function GuidedCapture() {
   const [liveQuality, setLiveQuality] = useState<{ brightness: number; dark: number; light: number; sharpness: number; heldMs: number; changePerSecond: number | null; reason: string } | null>(null);
   const qualityLog = useRef<object[]>([]);
   const [phase, setPhase] = useState<'intro' | 'scan' | 'review'>('intro');
-  const [connection, setConnection] = useState<Connection | null>(null), [code, setCode] = useState('');
+  const [connection, setConnection] = useState<Connection | null>(null);
   const [error, setError] = useState(''), [opening, setOpening] = useState(false), [status, setStatus] = useState('');
   const [running, setRunning] = useState(false), [busy, setBusy] = useState(false), [finishing, setFinishing] = useState(false);
   const [seconds, setSeconds] = useState(0), [calls, setCalls] = useState(0), [confirmations, setConfirmations] = useState(0);
@@ -68,7 +68,6 @@ export default function GuidedCapture() {
     try {
       const check = await fetch('/api/capture/status', { cache: 'no-store' }); const config: Connection = await check.json(); setConnection(config);
       if (!config.configured) throw new Error('AI API 키가 아직 연결되지 않았어요. 관리자에게 알려주세요.');
-      if (config.accessRequired && !code.trim()) throw new Error('데모 접근 코드를 입력해주세요.');
       if (!navigator.mediaDevices?.getUserMedia) throw new Error('Safari 또는 Chrome에서 HTTPS 주소로 열어주세요.');
       const media = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
       if (!alive.current || id !== session.current) { media.getTracks().forEach(t => t.stop()); return; }
@@ -123,7 +122,7 @@ export default function GuidedCapture() {
       pending.current = true; setBusy(true); setStatus('방금 장면에서 필요한 면과 부분을 확인하고 있어요.'); lastCall = elapsed; attempts.current++; setCalls(attempts.current);
       void (async () => {
         try {
-          const response = await fetch('/api/capture/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-capture-code': code }, body: JSON.stringify({ spec, targetId: target.id, frame: frame.image, reference, context }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(26_000)]) });
+          const response = await fetch('/api/capture/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ spec, targetId: target.id, frame: frame.image, reference, context }), signal: AbortSignal.any([controller.signal, AbortSignal.timeout(26_000)]) });
           const data = await response.json(); if (!response.ok) throw new Error(data.error || 'AI 판정에 실패했어요.');
           if (!alive.current || id !== session.current || !stream.current || spec.requirements[current.current]?.id !== target.id) return;
           const verdict = verdictSchema.parse(data.verdict);
@@ -144,7 +143,7 @@ export default function GuidedCapture() {
       })();
     }, 250);
     return () => clearInterval(timer);
-  }, [running, spec, code]);
+  }, [running, spec]);
   async function exportResults() {
     setExporting(true);
     try {
@@ -185,7 +184,6 @@ export default function GuidedCapture() {
       </div><div className={g.startPanel}>
         <div className={g.connection} role="status"><span className={g.statusDot} data-ready={connection?.configured || false} aria-hidden="true" /><span>{connection ? connection.configured ? 'AI 판정 준비됨' : 'AI 키 연결 대기' : '연결 확인 중…'}</span><button onClick={() => void refreshConnection()}>다시 확인</button></div>
         {!connection?.configured && <p className={s.note}>키가 연결되면 자동 판정을 시작할 수 있어요.</p>}
-        {connection?.accessRequired && <label className={g.field}>데모 접근 코드<input type="password" autoComplete="off" value={code} onChange={e => setCode(e.target.value)} placeholder="전달받은 접근 코드를 붙여넣으세요" /></label>}
         <button className={s.primary} disabled={opening || !connection?.configured} onClick={() => void begin()}>{opening ? '카메라 여는 중…' : '촬영 시작'}<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></button>
         <p className={g.duration}>최대 3분 · 소리 없이 촬영</p><p className={g.privacy}>시작하면 선별 사진과 시작 사진과 이전 확보 사진을 OpenAI에 전송해요. 전체 영상은 기기에만 남아요.</p>
       </div></div>
@@ -211,7 +209,6 @@ export default function GuidedCapture() {
       <div className={g.results}>{spec.requirements.map(r => { const found = accepted[r.id]; return <article key={r.id} data-missing={!found}>{found ? <a className={g.photoLink} href={found.image} download={`${r.id}.jpg`} aria-label={`${r.label} 사진 다운로드`}><img src={found.image} alt={`${r.label} 확보 사진`} /></a> : <div className={g.missingPhoto}><span>미확보</span></div>}<div><h2>{r.label}<span>{found ? 'AI 확보' : '미확보'}</span></h2>{found ? <><details className={g.evidence}><summary>판정 근거 보기</summary><p>{found.verdict.evidence}</p></details><button className={g.textButton} onClick={() => { const next = { ...accepted }; delete next[r.id]; acceptedRef.current = next; setAccepted(next); setReviewed(false); }}>이 사진 제외</button></> : <p>{r.instruction}</p>}</div></article>; })}</div>
       </div><div className={g.reviewAside}>
       {finishing ? <p role="status">영상을 마무리하고 있어요…</p> : clipURL ? <div className={g.recording}><h2>촬영한 영상</h2><video src={clipURL} controls playsInline /><button className={g.textButton} onClick={() => clip && save(clip, clip.type.includes('mp4') ? 'capture.mp4' : 'capture.webm')}>영상만 저장</button></div> : <p className={s.note}>녹화된 영상이 없어요. 사진과 판정 기록은 저장할 수 있어요.</p>}
-      {connection?.accessRequired && <details className={g.details} open={error.includes('코드')}><summary>접근 코드 수정</summary><label className={g.field}>데모 접근 코드 수정<input type="password" autoComplete="off" value={code} onChange={e => setCode(e.target.value)} placeholder="수정 후 다시 촬영해주세요" /></label></details>}
       <div className={g.savePanel}><label className={g.check}><input type="checkbox" checked={reviewed} onChange={e => setReviewed(e.target.checked)} />확보 사진과 미확보 항목을 확인했어요.</label>
       <button className={s.primary} disabled={!reviewed || finishing || exporting || (!evidence.length && !clip)} onClick={() => void exportResults()}>{exporting ? '파일 묶는 중…' : '촬영 자료 모두 저장'}</button><p className={s.note}>영상·사진·AI 판정 기록을 ZIP으로 저장해요.</p><button className={s.secondary} disabled={finishing || exporting} onClick={() => { if (window.confirm('새로 촬영할까요? 현재 자료는 먼저 저장해주세요.')) void begin(); }}>다시 촬영</button></div>
       </div></div>

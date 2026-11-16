@@ -10,3 +10,9 @@ output/
 .impeccable/review/
 .playwright-mcp/
 .vercel
+
+# Private real-video validation evidence; never commit user media.
+artifacts/video-evidence/
+
+# Local browser evidence can include customer inputs.
+artifacts/

@@ -28,3 +28,7 @@ test('existing work requires a choice, same handoff is idempotent and legacy dra
   assert.equal(needsImportChoice(importHandoff(packet), packet), false);
   assert.equal(restoreWorkspace(emptyWorkspace).captureSource, undefined);
 });
+test('whole-video provenance and late observations survive handoff, workspace restore and API validation',()=>{
+ const videoContext={sessionId:options.id,decodedFrames:1169,processedWindows:25,clips:[{id:'original',name:'case.mov',duration:39.03,frames:1169}],regions:[{key:'interior',label:'내부',state:'open',evidence:[{clipId:'original',time:37,frame:1108,quality:'clear',verified:true,detail:'후반에 열린 내부와 표기'}]}],gaps:[{key:'hinge',label:'힌지',state:'open',reason:'손에 가림',instruction:'손을 옮겨 보여주세요',status:'open'}]};
+ const packet=createHandoff({...options,videoContext}),work=restoreWorkspace(importHandoff(packet));assert.deepEqual(work.brief.videoContext,videoContext);assert.deepEqual(briefSchema.parse({...work.brief,request:'광고 기획'}).videoContext,videoContext);assert.equal(work.brief.request,'');
+});

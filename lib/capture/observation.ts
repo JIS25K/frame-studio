@@ -1,9 +1,12 @@
 import { z } from 'zod';
 import { duplicateDistance, type Quality } from './quality';
 
+export const regionBoxSchema = z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1), width: z.number().gt(0).max(1), height: z.number().gt(0).max(1) });
+
 export const inspectionSchema = z.object({
   issue: z.enum(['none', 'repeated', 'blurred', 'occluded', 'uncertain']),
   region: z.string().max(120),
+  box: regionBoxSchema.nullable().optional(),
   evidence: z.string().max(240),
   targetCheck: z.enum(['not_requested', 'same_region_clear', 'new_view', 'still_blocked', 'different_region', 'uncertain']),
 });
@@ -21,7 +24,7 @@ export const observationSchema = z.object({
   // Older recordings remain readable; only the new server output requires inspection.
   inspection: inspectionSchema.optional(),
 });
-export const observationOutputSchema = observationSchema.extend({ inspection: inspectionSchema });
+export const observationOutputSchema = observationSchema.extend({ inspection: inspectionSchema.extend({ box: regionBoxSchema.nullable() }) });
 export type Observation = z.infer<typeof observationSchema>;
 export function keepObservation(o: Observation, hasReference: boolean) {
   // A usable first scene establishes the baseline; novelty is only meaningful after that.

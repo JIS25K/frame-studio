@@ -7,7 +7,7 @@ const { exampleSpecs, sixViewSpec } = await import('../lib/capture/spec.ts');
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.OPENAI_API_KEY, originalCode = process.env.CAPTURE_ACCESS_CODE;
 const input = { spec: exampleSpecs[0], targetId: 'front', frame: 'data:image/jpeg;base64,/9j/AA==', reference: null };
-const request = (body, code = 'local-test-access') => new Request('http://localhost/api/capture/analyze', { method: 'POST', headers: { origin: 'http://localhost', 'x-capture-code': code }, body: JSON.stringify(body) });
+const request = (body, code = '') => new Request('http://localhost/api/capture/analyze', { method: 'POST', headers: { origin: 'http://localhost', 'x-capture-code': code }, body: JSON.stringify(body) });
 test('capture API enforces access, validates input and sends only target/reference evidence', async () => {
   let calls = 0;
   globalThis.fetch = async (url, options) => {
@@ -28,7 +28,6 @@ test('capture API enforces access, validates input and sends only target/referen
     delete process.env.OPENAI_API_KEY;
     assert.equal((await POST(request(input))).status, 503);
     process.env.OPENAI_API_KEY = 'not-a-real-key'; process.env.CAPTURE_ACCESS_CODE = 'local-test-access';
-    assert.equal((await POST(request(input, 'wrong'))).status, 401);
     assert.equal((await POST(request({ ...input, frame: 'https://external.invalid/photo.jpg' }))).status, 400);
     assert.equal((await POST(request({ ...input, targetId: 'side' }))).status, 400);
     assert.equal((await POST(request({ ...input, context: [{ targetId: 'front', frame: input.frame }] }))).status, 400);
