@@ -1,0 +1,8 @@
+AI-generated illustration of a fictional product; not a customer image or generated result from the app.
+Tool: built-in image_gen imagegen
+Reference: public/prompt/lumi-reference.png, existing fictional LUMI product image
+Generated: 2026-11-16
+Final asset: scene.png
+
+Prompt:
+Create a premium photographic still life for the Frame Studio product photography planning app. Landscape 4:3 composition. The attached reference is the identity reference for a fictional LUMI cosmetic serum bottle: preserve the same frosted pale sage green rounded glass body, white dropper and white cap, white rectangular front label with exact black text 'LUMI', 'CALM SERUM', '30 mL'. Show one complete large bottle standing slightly right of center on a low matte cool-white stone surface. Quiet pale powder blue background, a single softly folded white paper plane behind, elegant cool daylight from upper left with a subtle warm-gray natural shadow to lower right. Premium realistic editorial beauty photography, tactile glass and paper, precise clean label, restrained Japanese product-catalog art direction. Product dominant and fully visible; generous breathing room around it, lightly asymmetric composition, camera near bottle eye level. No extra bottles, no hands, no splash, no botanicals, no text overlay, no UI, no decorative badges or invented product claims. This will be visibly labeled as an AI-generated virtual product illustration, never a real customer result.

@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-16T06:14:22.559846+00:00",
+  "title": "Design System: FRAME Studio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "displayName": "Primary",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.09 265)",
+          "oklch(39% 0.09 265)",
+          "oklch(51% 0.09 265)",
+          "oklch(63% 0.09 265)",
+          "oklch(75% 0.09 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "primary-hover": {
+        "displayName": "Primary Hover",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.09 265)",
+          "oklch(39% 0.09 265)",
+          "oklch(51% 0.09 265)",
+          "oklch(63% 0.09 265)",
+          "oklch(75% 0.09 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "ink": {
+        "displayName": "Ink",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "muted": {
+        "displayName": "Muted",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "paper": {
+        "displayName": "Paper",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "white": {
+        "displayName": "White",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "line": {
+        "displayName": "Line",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "input-line": {
+        "displayName": "Input Line",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "focus": {
+        "displayName": "Focus",
+        "role": "primary",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.09 265)",
+          "oklch(39% 0.09 265)",
+          "oklch(51% 0.09 265)",
+          "oklch(63% 0.09 265)",
+          "oklch(75% 0.09 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "photo-ground": {
+        "displayName": "Photo Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "notice-ground": {
+        "displayName": "Notice Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "receipt-ground": {
+        "displayName": "Receipt Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "notice-ink": {
+        "displayName": "Notice Ink",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      },
+      "error-ink": {
+        "displayName": "Error Ink",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 40)",
+          "oklch(27% 0.018 40)",
+          "oklch(39% 0.018 40)",
+          "oklch(51% 0.018 40)",
+          "oklch(63% 0.018 40)",
+          "oklch(75% 0.018 40)",
+          "oklch(87% 0.008 40)",
+          "oklch(95% 0.008 40)"
+        ]
+      },
+      "error-ground": {
+        "displayName": "Error Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 40)",
+          "oklch(27% 0.018 40)",
+          "oklch(39% 0.018 40)",
+          "oklch(51% 0.018 40)",
+          "oklch(63% 0.018 40)",
+          "oklch(75% 0.018 40)",
+          "oklch(87% 0.008 40)",
+          "oklch(95% 0.008 40)"
+        ]
+      },
+      "capture-error-ground": {
+        "displayName": "Capture Error Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 40)",
+          "oklch(27% 0.018 40)",
+          "oklch(39% 0.018 40)",
+          "oklch(51% 0.018 40)",
+          "oklch(63% 0.018 40)",
+          "oklch(75% 0.018 40)",
+          "oklch(87% 0.008 40)",
+          "oklch(95% 0.008 40)"
+        ]
+      },
+      "camera-ground": {
+        "displayName": "Camera Ground",
+        "role": "neutral",
+        "tonalRamp": [
+          "oklch(15% 0.008 265)",
+          "oklch(27% 0.018 265)",
+          "oklch(39% 0.018 265)",
+          "oklch(51% 0.018 265)",
+          "oklch(63% 0.018 265)",
+          "oklch(75% 0.018 265)",
+          "oklch(87% 0.008 265)",
+          "oklch(95% 0.008 265)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Task heading",
+        "purpose": "38px desktop, 34px at 1050px, 30px at 750px."
+      },
+      "body": {
+        "displayName": "Korean sans workspace",
+        "purpose": "Shared preferred stack; local availability determines actual font."
+      }
+    },
+    "shadows": [
+      {
+        "name": "swatch-edge",
+        "value": "inset 0 0 0 1px #00000010",
+        "purpose": "Direction palette swatches only; no workspace drop shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-state",
+        "value": "background .18s, border-color .18s",
+        "purpose": "Planning controls; disabled under reduced motion."
+      },
+      {
+        "name": "photo-reveal",
+        "value": "200ms ease-out",
+        "purpose": "Filmstrip entry: opacity .75→1 and clip-path bottom inset 12%→0; disabled under reduced motion."
+      },
+      {
+        "name": "busy-spin",
+        "value": "900ms linear infinite",
+        "purpose": "17px busy indicator; disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "shell-tablet",
+        "value": "1050px"
+      },
+      {
+        "name": "aside-sticky-min",
+        "value": "1000px"
+      },
+      {
+        "name": "plan-heading-stack",
+        "value": "850px"
+      },
+      {
+        "name": "task-stack",
+        "value": "750px"
+      },
+      {
+        "name": "nav-and-controls-stack",
+        "value": "650px"
+      },
+      {
+        "name": "camera-review-legacy",
+        "value": "600px"
+      },
+      {
+        "name": "landscape-camera-max-height",
+        "value": "550px"
+      }
+    ],
+    "focus": {
+      "width": "3px",
+      "colorToken": "focus",
+      "offsetPlanning": "4px",
+      "offsetCapture": "3px"
+    },
+    "tonalRampNote": "Preview-only synthesized tonal ramps; not application tokens or replacements for frontmatter colors.",
+    "photography": {
+      "servedAsset": "public/studio/scene.jpg",
+      "originalAsset": "public/studio/scene.png",
+      "reference": "public/prompt/lumi-reference.png",
+      "provenance": "public/studio/scene-provenance.txt",
+      "generatedDate": "2026-11-16",
+      "tool": "built-in image_gen imagegen",
+      "status": "Synthetic fictional product example, visibly labeled; not a customer image or app-generated result.",
+      "referenceHistory": "Earlier production history is not recorded in this documentation."
+    },
+    "sources": [
+      "app/globals.css",
+      "app/studio-nav.tsx",
+      "app/studio-nav.module.css",
+      "app/capture/orbit.module.css",
+      "app/prompt/studio.module.css",
+      ".impeccable/review/final-review.md"
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width planning action; disabled at 0.45 opacity.",
+      "html": "<button class=\"ds-primary\">연출 제안받기</button>",
+      "css": ".ds-primary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:var(--green,#244eca);color:white;border:0;width:100%;min-height:52px}.ds-primary:hover:not(:disabled){background:#17399b}.ds-primary:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}.ds-primary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White outlined planning action.",
+      "html": "<button class=\"ds-secondary\">프롬프트 복사</button>",
+      "css": ".ds-secondary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:white;border:1px solid #b7c3d8}.ds-secondary:hover:not(:disabled){background:#e8edf9}.ds-secondary:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}.ds-secondary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Request field",
+      "kind": "input",
+      "refersTo": "request-field",
+      "description": "Resizable scene request with a persistent label.",
+      "html": "<label class=\"ds-field\">원하는 느낌이나 장면을 알려주세요<textarea placeholder=\"예: 촉촉하고 고급스러운 세럼 광고 사진.\"></textarea></label>",
+      "css": ".ds-field{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:block;font-size:14px;font-weight:600}.ds-field textarea{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:block;margin-top:10px;width:100%;box-sizing:border-box;min-height:142px;padding:18px;border:1px solid #b7c3d8;border-radius:8px;background:white;resize:vertical;font-size:16px;line-height:1.7;caret-color:#244eca;transition:background .18s,border-color .18s}.ds-field textarea::placeholder{color:#5d6b81;opacity:1}.ds-field textarea:focus{border-color:#244eca}.ds-field textarea:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-field textarea{transition:none}}"
+    },
+    {
+      "name": "Studio navigation",
+      "kind": "nav",
+      "refersTo": "active-navigation",
+      "description": "Two routes; current route uses navy fill.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"스튜디오 도구\"><a href=\"/capture\">1 제품 촬영</a><a href=\"/prompt\" aria-current=\"page\">2 연출 기획</a></nav>",
+      "css": ".ds-nav{display:flex;gap:8px;font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:13px}.ds-nav a{padding:12px 18px;border-radius:7px;text-decoration:none;color:var(--muted,#56657b)}.ds-nav a[aria-current]{background:var(--ink,#18253d);color:white}.ds-nav a:hover{opacity:.85}.ds-nav a:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}@media(max-width:650px){.ds-nav a{flex:1;text-align:center;padding:11px}}"
+    },
+    {
+      "name": "Active step",
+      "kind": "custom",
+      "refersTo": "step-active",
+      "description": "Noninteractive current-step indicator.",
+      "html": "<span class=\"ds-step\" aria-current=\"step\"><span>1</span>제품과 요청</span>",
+      "css": ".ds-step{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:inline-flex;gap:9px;align-items:center;color:var(--green,#244eca);font-size:13px;font-weight:700}.ds-step>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--green,#244eca);color:white;font-size:11px;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Source label",
+      "kind": "chip",
+      "refersTo": "source-label",
+      "description": "Static label over original product imagery.",
+      "html": "<span class=\"ds-source\">제품 원본</span>",
+      "css": ".ds-source{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:inline-block;font-size:10px;background:white;padding:3px 8px;border-radius:4px}"
+    },
+    {
+      "name": "Plan sheet",
+      "kind": "card",
+      "refersTo": "plan-sheet",
+      "description": "Static shot definitions with thin row dividers.",
+      "html": "<dl class=\"ds-sheet\"><div><dt>배경</dt><dd>밝은 화이트 무광 배경</dd></div><div><dt>빛</dt><dd>부드러운 확산광, 정면 위주</dd></div></dl>",
+      "css": ".ds-sheet{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);margin:0;padding:18px 22px;background:white;border:1px solid var(--line,#d7deea);border-radius:8px}.ds-sheet>div{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid #edf0f6}.ds-sheet>div:last-child{border:0}.ds-sheet dt{font-size:12px;color:var(--muted,#56657b)}.ds-sheet dd{font-size:13px;line-height:1.8;margin:0;overflow-wrap:anywhere}@media(max-width:650px){.ds-sheet{padding:14px}.ds-sheet>div{grid-template-columns:70px minmax(0,1fr);gap:10px}.ds-sheet dd{font-size:12px}}"
+    },
+    {
+      "name": "Photo upload",
+      "kind": "input",
+      "refersTo": "upload-tile",
+      "description": "Native file input over a dashed tile.",
+      "html": "<label class=\"ds-upload\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 4v16M4 12h16\"/></svg>사진 추가<input type=\"file\" accept=\"image/*\" aria-label=\"제품 사진 추가\"></label>",
+      "css": ".ds-upload{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:flex;flex-direction:column;gap:9px;align-items:center;justify-content:center;width:110px;height:110px;border:1px dashed var(--line,#d7deea);border-radius:6px;background:#e9eef8;color:#244eca;position:relative;font-size:12px;cursor:pointer}.ds-upload:hover{background:#e8edf9}.ds-upload:focus-within{outline:3px solid #355ddd;outline-offset:3px}.ds-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}@media(max-width:650px){.ds-upload{width:96px;height:96px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Product Catalog Studio",
+    "overview": "A restrained product-catalog studio: cool paper, navy ink, cobalt actions and large product photographs. The interface stays quiet while capture evidence and concrete shot instructions carry the work. This records the implemented code-led direction, not an approved visual comp.",
+    "keyCharacteristics": [
+      "One Korean sans stack across capture and planning.",
+      "Photographic context beside a focused task; tasks precede imagery on phones.",
+      "Thin dividers, compact control corners and flat tonal surfaces."
+    ],
+    "rules": [],
+    "dos": [
+      "Keep product evidence visibly separate from staging references.",
+      "Label synthetic examples and keep original product identity legible.",
+      "Preserve visible keyboard focus and 44px primary interaction targets.",
+      "Check the 700px stacked layout as well as desktop and 390px phone views."
+    ],
+    "donts": [
+      "Do not present the example photograph as a customer capture or an image generated by the app.",
+      "Do not reintroduce the rejected pale-green interface palette.",
+      "Do not replace sequential direction comparisons with a decorative dashboard card grid.",
+      "Do not infer a loaded webfont from the preferred family name."
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+node_modules
+.next/
+.vercel/
+.env*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+output/
+.impeccable/questions/
+.impeccable/review/
+.playwright-mcp/
+.vercel
