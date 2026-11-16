@@ -1,5 +1,7 @@
 # FRAME Studio
 
+[촬영 시작](https://frame-prompt-demo.vercel.app/capture) · [바로 연출 기획](https://frame-prompt-demo.vercel.app/prompt)
+
 제품 촬영과 연출 기획을 하나로 연결한 웹앱입니다. 촬영에서 확인한 사진을 다시 업로드하지 않고, 원하는 느낌을 입력해 제작 계획을 만들 수 있습니다.
 
 - `/capture`: 최대 90초 연속 촬영, 선명도 검사, AI 장면 선별, 보충 촬영 안내 및 자료 다운로드
@@ -44,3 +46,7 @@ npm run build
 - `tests`: 합성 데이터 기반 검사. 실제 고객 자료는 포함하지 않습니다.
 
 촬영의 새 정보/같은 제품/보충 여부는 AI 추정이며 제품 전체 확보율이 아닙니다. 라벨 일치와 실제 제작 품질은 결과물에서 별도 검수가 필요합니다. 요청 수 제한은 서버 인스턴스별 최선 노력 방식이며, 운영 규모의 계정별 사용량 제한은 별도 구현이 필요합니다.
+
+## 화면
+
+![FRAME Studio capture interface](docs/studio-preview.png)
