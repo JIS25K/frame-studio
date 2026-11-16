@@ -49,4 +49,6 @@ npm run build
 
 ## 화면
 
-![FRAME Studio capture interface](docs/studio-preview.png)
+![FRAME Studio capture interface](docs/studio-preview.jpg)
+
+![FRAME Studio planning interface](docs/planning-preview.jpg)
