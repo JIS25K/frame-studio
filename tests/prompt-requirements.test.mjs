@@ -108,3 +108,20 @@ test('generic model shot types and explicit product-only box omission cannot tri
  const schema=extractionSchema(requirementSources(brief,[]),brief);
  assert.equal(schema.safeParse({requirements:[{...model,sourceKey:'source-0-0',sourceIds:['invented']}]}).success,false);
 });
+
+test('an added headline needs no photo while specific logo and label artwork still need evidence',async()=>{
+ const {normalizeCreativeEvidence,applyEvidenceReview,questionsForRequirements}=await import('../lib/prompt-engine/requirements.ts');
+ const request='제품명 LUMI를 큰 글씨로 상단에 넣어주세요.';
+ const input={...brief,request};
+ const headline={...requirements[0],id:'headline',text:'상단에 LUMI를 큰 글씨로 넣기',quote:request,origin:'request',field:'copy',sourceIds:[],evidence:'missing',targetShots:[]};
+ const extraction=normalizeCreativeEvidence(input,[],[headline]);
+ assert.equal(extraction[0].evidence,'not_needed');
+ const reviewed=applyEvidenceReview(input,[],extraction,{decisions:[{id:'headline',evidence:'missing',sourceIds:[]}]});
+ assert.equal(reviewed[0].text,headline.text);
+ assert.deepEqual(questionsForRequirements(input,reviewed),[]);
+ for(const text of ['사진 속 로고와 동일한 제목 넣기','뒷면 라벨 문구를 그대로 넣기','패키지 인증마크를 제목 옆에 넣기']) {
+  const preserved=normalizeCreativeEvidence(input,[],[{...headline,text}]);
+  assert.equal(preserved[0].evidence,'missing');
+  assert.equal(questionsForRequirements(input,preserved).length,1);
+ }
+});
