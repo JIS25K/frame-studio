@@ -148,18 +148,18 @@ export default function OrbitCapture(){
     <div><strong>{SUPPLEMENT_LABELS[activeSupplement.kind]}</strong><span>{activeSupplement.region}</span>
     <button onClick={()=>{updateSupplements(deferSupplement(supplementRef.current,activeSupplement.id,performance.now()-started.current));setReviewSuggested(false);}}>지금은 어려워요 · 미확보로 남기기</button></div>
    </div>}
-   <p>{unresolved?`보충 확인 ${unresolved}건 · 확보율이 아니에요`:reviewSuggested?'모은 장면을 한 번 확인해도 좋아요.':'선명하고 새로운 장면은 자동으로 모아둘게요.'}</p><button className={s.primary} onClick={()=>stop()}>촬영 마치고 확인</button></div>
+   <p>{unresolved?`보충 확인 ${unresolved}건`:reviewSuggested?'모은 장면을 한 번 확인해도 좋아요.':'선명하고 새로운 장면은 자동으로 모아둘게요.'}</p><button className={s.primary} onClick={()=>stop()}>촬영 마치고 확인</button></div>
  </section>:<div className={s.shell}>
   <StudioNav active="capture" />
   {error&&<p role="alert" className={s.error}>{error}</p>}
-  {phase==='intro'?<div className={s.introLayout}><section className={s.intro}><h1>제품을 담고,<br/>다음 장면을 준비해요.</h1><p>제품 전체를 화면에 담고 자연스럽게 돌려보세요.<br/>멈추거나 면을 구분할 필요 없어요.</p><div className={s.instructions}><p>휴대폰을 편하게 고정하고 제품을 천천히 돌려주세요.</p><p>같은 쪽 반복·흐림·가림이 의심되면 보충 촬영을 안내할게요.</p><p>무겁다면 제품을 두고 휴대폰으로 주변을 천천히 돌아도 돼요.</p></div>
-   <div className={s.startPanel}><div className={s.connection}><span>{config?.configured?'촬영 준비됨':'AI 연결 확인 필요'}</span><button onClick={()=>{setError('');void connection().catch(e=>setError(e.message));}}>다시 확인</button></div>
+  {phase==='intro'?<div className={s.introLayout}><section className={s.intro}><h1>제품 촬영</h1><p>제품을 천천히 돌리면 필요한 장면을 모아요.</p><ol className={s.instructions}><li>제품 전체가 화면에 들어오게 맞추세요.</li><li>천천히 돌리며 촬영 안내를 따라주세요.</li><li>사진을 확인한 뒤 연출을 기획하세요.</li></ol>
+   <div className={s.startPanel}><div className={s.connection}><span>{config?.configured?'촬영 준비됨':'AI 연결 확인 필요'}</span>{!config?.configured&&<button onClick={()=>{setError('');void connection().catch(e=>setError(e.message));}}>다시 확인</button>}</div>
     {config?.accessRequired&&<label>데모 접근 코드<input type="password" value={code} onChange={e=>setCode(e.target.value)} autoComplete="off"/></label>}
     <button className={s.primary} disabled={opening||!config?.configured} onClick={()=>void begin()}>{opening?'카메라 여는 중…':'촬영 시작'}</button>
-    <button className={s.secondary} disabled={opening} onClick={()=>void tryExample()}>예시 사진으로 연결 체험</button><p className={s.note}>최대 90초 · 소리 없이 촬영<br/>선별 후보 사진과 이전 장면을 OpenAI로 보내요. 전체 영상은 기기에 남아요.</p>
-   </div><p className={s.note}>무늬가 있는 불투명한 제품부터 촬영해주세요. 투명·유광·대칭 제품은 판단이 어려워요. 모든 표면의 확보나 3D 복원을 보장하지 않아요.</p><Link className={s.directLink} href="/prompt">이미 사진이 있나요? 바로 연출 기획하기</Link></section><figure className={s.heroImage}><img src="/studio/scene.jpg" alt="가상 세럼의 제품 촬영 연출 예시"/><figcaption><strong>작은 제품에서 시작되는<br/>다음 장면.</strong><span>AI로 만든 연출 예시 · 실제 촬영 결과가 아닙니다.</span></figcaption></figure></div>:<section className={s.review}>
-   <h1>{demo?'예시 사진으로 이어가 볼까요?':'이 장면들을 모았어요.'}</h1>{demo&&<p className={s.demoNote}>가상 화장품 체험 사진입니다. 실제 카메라 촬영·AI 선별 결과가 아니에요.</p>}<p>실제 제품과 맞고, 필요한 부분이 보이는지 확인해주세요.</p>
-   {finalizing?<p role="status">영상을 마무리하고 있어요…</p>:clipURL?<div className={s.recording}><video src={clipURL} controls playsInline/><button onClick={()=>clip&&download(clip,clip.type.includes('mp4')?'capture.mp4':'capture.webm')}>영상만 저장</button></div>:<p>녹화 영상은 없어요. 선별 사진과 기록은 저장할 수 있어요.</p>}
+    <button className={s.secondary} disabled={opening} onClick={()=>void tryExample()}>예시 사진으로 연결 체험</button><p className={s.note}>최대 90초 · 사진은 OpenAI로 전송됩니다.</p>
+   </div><Link className={s.directLink} href="/prompt">사진 직접 올리기</Link></section><figure className={s.heroImage}><img src="/studio/scene.jpg" alt="가상 세럼의 제품 촬영 연출 예시"/><figcaption><span>가상 제품 · AI 연출 예시</span></figcaption></figure></div>:<section className={s.review}>
+   <h1>사진 확인</h1>{demo&&<p className={s.demoNote}>가상 제품 예시</p>}<p>사용할 사진을 확인하세요. 불필요한 장면은 제외할 수 있어요.</p>
+   {finalizing?<p role="status">영상을 마무리하고 있어요…</p>:clipURL?<div className={s.recording}><video src={clipURL} controls playsInline/><button onClick={()=>clip&&download(clip,clip.type.includes('mp4')?'capture.mp4':'capture.webm')}>영상만 저장</button></div>:!demo?<p className={s.note}>녹화 없이 선별 사진만 저장됩니다.</p>:null}
    {supplements.length>0&&<section className={s.supplementReview} aria-label="보충 촬영 기록">
     <h2>보충 촬영 확인</h2><p>{unresolved?`아직 확인하지 못한 항목 ${unresolved}건이 있어요. 부분 자료로 저장할 수 있어요.`:'각 항목의 보충 장면을 모았어요. 실제로 개선됐는지 사진을 확인해주세요.'}</p>
     {supplements.map(t=><article key={t.id}>
@@ -168,14 +168,15 @@ export default function OrbitCapture(){
       {t.support&&<a href={t.support.image} download={`${t.id}-support.jpg`}>보충 사진 보기·저장<img src={t.support.image} alt={`${t.region} 보충 장면`}/></a>}
      </div>
     </article>)}
-    <p className={s.note}>반복·가림·같은 부분 여부는 AI 추정이에요. 흐림 의심은 중앙 영역의 선명도 신호예요. 미촬영 면의 위치나 제품 전체 확보율을 측정한 것은 아니에요.</p>
+    <p className={s.note}>AI가 찾은 보충 후보입니다. 사진으로 확인해주세요.</p>
    </section>}
    {selected.length?<div className={s.scenes}>{selected.map(e=><article key={e.at}><a href={e.image} download={`scene-${Math.round(e.at)}.jpg`}><img src={e.image} alt={e.observation.description}/></a><div><p>{e.observation.description}</p><small>{(e.at/1000).toFixed(1)}초</small><button onClick={()=>{setSelected(p=>p.filter(x=>x.at!==e.at));updateSupplements(excludeSupplementEvidence(supplementRef.current,e.at));setReviewed(false);}}>이 장면 제외</button></div></article>)}</div>:<p className={s.empty}>자동 선별한 장면이 없어요. 녹화 영상이 있다면 먼저 저장하고 조명과 속도를 바꿔 다시 촬영해주세요.</p>}
    {config?.accessRequired&&<details className={s.details} open={error.includes('코드')}><summary>접근 코드 수정</summary><label>데모 접근 코드<input type="password" value={code} onChange={e=>setCode(e.target.value)}/></label></details>}
    <label className={s.check}><input type="checkbox" checked={reviewed} onChange={e=>setReviewed(e.target.checked)}/>선별된 장면과 부족한 부분을 확인했어요.</label>
-   <button className={s.primary} disabled={!reviewed||saving||finalizing||!selected.length} onClick={()=>void continueToPrompt()}>{saving?'사진을 연결하고 있어요…':'이 사진으로 연출 기획하기'}</button><p className={s.note}>선택한 사진이 그대로 이어져요. 다음 화면에서는 원하는 느낌만 알려주세요.</p><button className={s.secondary} disabled={!reviewed||saving||finalizing||(!history.length&&!clip)} onClick={()=>void exportAll()}>{saving?'저장 준비 중…':'영상과 선별 장면 저장'}</button><button className={s.secondary} disabled={finalizing||saving} onClick={()=>{if(window.confirm('현재 자료를 저장했나요? 다시 촬영하면 현재 자료가 사라져요.'))void begin();}}>다시 촬영</button>
-   <details className={s.details}><summary>선별 기록 · {history.length}건</summary>{history.map((e,i)=><p key={i}>{(e.at/1000).toFixed(1)}초 · {e.kept?'선별':'제외'} · {e.observation.description}<br/>추가로 보인 정보: {e.observation.newDetails.join(', ')||'없음'}<br/>확인하지 못한 부분: {e.observation.visibleGaps.join(', ')||'모델이 지적한 부분 없음'}</p>)}</details><p className={s.note}>사진 개수는 완성도가 아니에요. 자동 선별에는 오판이 있을 수 있고, 영상의 모든 순간을 AI가 분석한 것은 아니에요.</p>
-  </section>}<footer className={s.footer}>FRAME · 촬영 → 연출 기획 → 제작 계획 | 전체 영상은 이동 전에 저장해주세요.</footer>
+   <button className={s.primary} disabled={!reviewed||saving||finalizing||!selected.length} onClick={()=>void continueToPrompt()}>{saving?'사진을 연결하고 있어요…':'이 사진으로 연출 기획하기'}</button><button className={s.secondary} disabled={!reviewed||saving||finalizing||(!history.length&&!clip)} onClick={()=>void exportAll()}>{saving?'저장 준비 중…':'촬영 자료 저장'}</button><button className={s.secondary} disabled={finalizing||saving} onClick={()=>{if(window.confirm('현재 자료를 저장했나요? 다시 촬영하면 현재 자료가 사라져요.'))void begin();}}>다시 촬영</button>
+   <details className={s.details}><summary>선별 기록 · {history.length}건</summary>{history.map((e,i)=><p key={i}>{(e.at/1000).toFixed(1)}초 · {e.kept?'선별':'제외'} · {e.observation.description}<br/>추가로 보인 정보: {e.observation.newDetails.join(', ')||'없음'}<br/>확인하지 못한 부분: {e.observation.visibleGaps.join(', ')||'모델이 지적한 부분 없음'}</p>)}</details>
+   {clip&&<p className={s.note}>전체 영상이 필요하면 이동 전에 저장해주세요.</p>}
+  </section>}
  </div>}
  </main>;
 }

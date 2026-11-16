@@ -15,7 +15,7 @@ Capture a product for up to 90 seconds, inspect selected frames and unresolved g
 Capture selection and supplemental checks are model estimates, not certified coverage or 3D reconstruction. Photos remain in the browser until AI analysis is requested; sampled capture frames and planning inputs go to OpenAI. Full video stays local. Failed local persistence must not navigate away from captured photos. Existing plans must not be silently replaced. Product evidence must remain distinguishable from staging references. No customer CS data or secrets belong in the public repository or app assets.
 
 ## Current request
-Connect the two engines without removing direct upload. Unify and substantially redesign their visual presentation; the earlier pale-green basic form is rejected as too generic. The user authorized a new public GitHub repository containing both engines and allows implementation order to be chosen by the builder. Deploy the integrated application after verification.
+Refine the demonstration app: remove non-instructional and repetitive UI copy, preserve the light neutral and blue tone of Thermit/Creazy without exact color copying. Keep capture, direct upload, automatic photo transfer and planning behavior. Performance evaluation is a later task; this pass is UI only.
 
 ## Design use scene
 Operate mode. A seller handles a phone beside their product under ordinary office/daylight, then reviews photos and builds an advertising scene at a desk. Camera guidance must stay legible and controls easy to touch; photo evidence should dominate over form decoration. Shared navigation, typography, controls and feedback across both routes. Synthetic photography is clearly identified as an example, never as the user's generated result.

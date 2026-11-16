@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-16T06:14:22.559846+00:00",
+  "generatedAt": "2026-11-16T06:45:04.735311+00:00",
   "title": "Design System: FRAME Studio",
   "extensions": {
     "colorMeta": {
@@ -246,11 +246,11 @@
     "typographyMeta": {
       "display": {
         "displayName": "Task heading",
-        "purpose": "38px desktop, 34px at 1050px, 30px at 750px."
+        "purpose": "30px desktop, 28px tablet, 25px phone."
       },
       "body": {
         "displayName": "Korean sans workspace",
-        "purpose": "Shared preferred stack; local availability determines actual font."
+        "purpose": "Self-hosted Pretendard Variable, with system fallbacks."
       }
     },
     "shadows": [
@@ -340,7 +340,7 @@
       "refersTo": "button-primary",
       "description": "Full-width planning action; disabled at 0.45 opacity.",
       "html": "<button class=\"ds-primary\">연출 제안받기</button>",
-      "css": ".ds-primary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:var(--green,#244eca);color:white;border:0;width:100%;min-height:52px}.ds-primary:hover:not(:disabled){background:#17399b}.ds-primary:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}.ds-primary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+      "css": ".ds-primary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:var(--green,#316de6);color:white;border:0;width:100%;min-height:48px}.ds-primary:hover:not(:disabled){background:#2459c3}.ds-primary:focus-visible{outline:3px solid #3b82f6;outline-offset:4px;}.ds-primary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
     },
     {
       "name": "Secondary action",
@@ -348,23 +348,23 @@
       "refersTo": "button-secondary",
       "description": "White outlined planning action.",
       "html": "<button class=\"ds-secondary\">프롬프트 복사</button>",
-      "css": ".ds-secondary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:white;border:1px solid #b7c3d8}.ds-secondary:hover:not(:disabled){background:#e8edf9}.ds-secondary:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}.ds-secondary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+      "css": ".ds-secondary{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);font-size:14px;font-weight:600;padding:13px 20px;border-radius:7px;min-height:44px;cursor:pointer;transition:background .18s,border-color .18s;background:white;border:1px solid #cdd3dd}.ds-secondary:hover:not(:disabled){background:#edf3ff}.ds-secondary:focus-visible{outline:3px solid #3b82f6;outline-offset:4px;}.ds-secondary:disabled{opacity:.45;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
     },
     {
       "name": "Request field",
       "kind": "input",
       "refersTo": "request-field",
       "description": "Resizable scene request with a persistent label.",
-      "html": "<label class=\"ds-field\">원하는 느낌이나 장면을 알려주세요<textarea placeholder=\"예: 촉촉하고 고급스러운 세럼 광고 사진.\"></textarea></label>",
-      "css": ".ds-field{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:block;font-size:14px;font-weight:600}.ds-field textarea{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:block;margin-top:10px;width:100%;box-sizing:border-box;min-height:142px;padding:18px;border:1px solid #b7c3d8;border-radius:8px;background:white;resize:vertical;font-size:16px;line-height:1.7;caret-color:#244eca;transition:background .18s,border-color .18s}.ds-field textarea::placeholder{color:#5d6b81;opacity:1}.ds-field textarea:focus{border-color:#244eca}.ds-field textarea:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-field textarea{transition:none}}"
+      "html": "<label class=\"ds-field\">원하는 느낌<textarea placeholder=\"예: 촉촉하고 고급스러운 세럼 광고 사진.\"></textarea></label>",
+      "css": ".ds-field{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);display:block;font-size:14px;font-weight:600}.ds-field textarea{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);display:block;margin-top:10px;width:100%;box-sizing:border-box;min-height:128px;padding:18px;border:1px solid #cdd3dd;border-radius:8px;background:white;resize:vertical;font-size:16px;line-height:1.7;caret-color:#316de6;transition:background .18s,border-color .18s}.ds-field textarea::placeholder{color:#5d6b81;opacity:1}.ds-field textarea:focus{border-color:#316de6}.ds-field textarea:focus-visible{outline:3px solid #3b82f6;outline-offset:4px;}@media(prefers-reduced-motion:reduce){.ds-field textarea{transition:none}}"
     },
     {
       "name": "Studio navigation",
       "kind": "nav",
       "refersTo": "active-navigation",
-      "description": "Two routes; current route uses navy fill.",
+      "description": "Current route uses pale blue fill and blue text.",
       "html": "<nav class=\"ds-nav\" aria-label=\"스튜디오 도구\"><a href=\"/capture\">1 제품 촬영</a><a href=\"/prompt\" aria-current=\"page\">2 연출 기획</a></nav>",
-      "css": ".ds-nav{display:flex;gap:8px;font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);font-size:13px}.ds-nav a{padding:12px 18px;border-radius:7px;text-decoration:none;color:var(--muted,#56657b)}.ds-nav a[aria-current]{background:var(--ink,#18253d);color:white}.ds-nav a:hover{opacity:.85}.ds-nav a:focus-visible{outline:3px solid #355ddd;outline-offset:4px;}@media(max-width:650px){.ds-nav a{flex:1;text-align:center;padding:11px}}"
+      "css": ".ds-nav{display:flex;gap:8px;font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);font-size:13px}.ds-nav a{padding:12px 18px;border-radius:7px;text-decoration:none;color:var(--muted,#5e6675)}.ds-nav a[aria-current]{background:#eaf1ff;color:#2459c3}.ds-nav a:hover{opacity:.85}.ds-nav a:focus-visible{outline:3px solid #3b82f6;outline-offset:4px;}@media(max-width:650px){.ds-nav a{flex:1;text-align:center;padding:11px}}"
     },
     {
       "name": "Active step",
@@ -372,7 +372,7 @@
       "refersTo": "step-active",
       "description": "Noninteractive current-step indicator.",
       "html": "<span class=\"ds-step\" aria-current=\"step\"><span>1</span>제품과 요청</span>",
-      "css": ".ds-step{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:inline-flex;gap:9px;align-items:center;color:var(--green,#244eca);font-size:13px;font-weight:700}.ds-step>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--green,#244eca);color:white;font-size:11px;font-variant-numeric:tabular-nums}"
+      "css": ".ds-step{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);display:inline-flex;gap:9px;align-items:center;color:var(--green,#316de6);font-size:13px;font-weight:700}.ds-step>span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--green,#316de6);color:white;font-size:11px;font-variant-numeric:tabular-nums}"
     },
     {
       "name": "Source label",
@@ -380,7 +380,7 @@
       "refersTo": "source-label",
       "description": "Static label over original product imagery.",
       "html": "<span class=\"ds-source\">제품 원본</span>",
-      "css": ".ds-source{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:inline-block;font-size:10px;background:white;padding:3px 8px;border-radius:4px}"
+      "css": ".ds-source{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);display:inline-block;font-size:10px;background:white;padding:3px 8px;border-radius:4px}"
     },
     {
       "name": "Plan sheet",
@@ -388,7 +388,7 @@
       "refersTo": "plan-sheet",
       "description": "Static shot definitions with thin row dividers.",
       "html": "<dl class=\"ds-sheet\"><div><dt>배경</dt><dd>밝은 화이트 무광 배경</dd></div><div><dt>빛</dt><dd>부드러운 확산광, 정면 위주</dd></div></dl>",
-      "css": ".ds-sheet{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);margin:0;padding:18px 22px;background:white;border:1px solid var(--line,#d7deea);border-radius:8px}.ds-sheet>div{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid #edf0f6}.ds-sheet>div:last-child{border:0}.ds-sheet dt{font-size:12px;color:var(--muted,#56657b)}.ds-sheet dd{font-size:13px;line-height:1.8;margin:0;overflow-wrap:anywhere}@media(max-width:650px){.ds-sheet{padding:14px}.ds-sheet>div{grid-template-columns:70px minmax(0,1fr);gap:10px}.ds-sheet dd{font-size:12px}}"
+      "css": ".ds-sheet{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);margin:0;padding:18px 22px;background:white;border:1px solid var(--line,#e2e5eb);border-radius:8px}.ds-sheet>div{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid #edf0f6}.ds-sheet>div:last-child{border:0}.ds-sheet dt{font-size:12px;color:var(--muted,#5e6675)}.ds-sheet dd{font-size:13px;line-height:1.8;margin:0;overflow-wrap:anywhere}@media(max-width:650px){.ds-sheet{padding:14px}.ds-sheet>div{grid-template-columns:70px minmax(0,1fr);gap:10px}.ds-sheet dd{font-size:12px}}"
     },
     {
       "name": "Photo upload",
@@ -396,16 +396,16 @@
       "refersTo": "upload-tile",
       "description": "Native file input over a dashed tile.",
       "html": "<label class=\"ds-upload\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 4v16M4 12h16\"/></svg>사진 추가<input type=\"file\" accept=\"image/*\" aria-label=\"제품 사진 추가\"></label>",
-      "css": ".ds-upload{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#18253d);display:flex;flex-direction:column;gap:9px;align-items:center;justify-content:center;width:110px;height:110px;border:1px dashed var(--line,#d7deea);border-radius:6px;background:#e9eef8;color:#244eca;position:relative;font-size:12px;cursor:pointer}.ds-upload:hover{background:#e8edf9}.ds-upload:focus-within{outline:3px solid #355ddd;outline-offset:3px}.ds-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}@media(max-width:650px){.ds-upload{width:96px;height:96px}}"
+      "css": ".ds-upload{font-family:Pretendard, Apple SD Gothic Neo, Noto Sans KR, system-ui, sans-serif;color:var(--ink,#111827);display:flex;flex-direction:column;gap:9px;align-items:center;justify-content:center;width:110px;height:110px;border:1px dashed var(--line,#e2e5eb);border-radius:6px;background:#fafbfc;color:#316de6;position:relative;font-size:12px;cursor:pointer}.ds-upload:hover{background:#edf3ff}.ds-upload:focus-within{outline:3px solid #3b82f6;outline-offset:3px}.ds-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}@media(max-width:650px){.ds-upload{width:96px;height:96px}}"
     }
   ],
   "narrative": {
     "northStar": "The Product Catalog Studio",
-    "overview": "A restrained product-catalog studio: cool paper, navy ink, cobalt actions and large product photographs. The interface stays quiet while capture evidence and concrete shot instructions carry the work. This records the implemented code-led direction, not an approved visual comp.",
+    "overview": "A compact demo workspace: light neutral canvas, white task surfaces, blue actions and short instructions. Creazy-inspired tone without exact copying.",
     "keyCharacteristics": [
-      "One Korean sans stack across capture and planning.",
-      "Photographic context beside a focused task; tasks precede imagery on phones.",
-      "Thin dividers, compact control corners and flat tonal surfaces."
+      "Self-hosted Korean typography across both engines.",
+      "One focused input composer; evidence appears in later planning steps.",
+      "Only actionable copy, with provenance and errors retained."
     ],
     "rules": [],
     "dos": [
@@ -417,8 +417,7 @@
     "donts": [
       "Do not present the example photograph as a customer capture or an image generated by the app.",
       "Do not reintroduce the rejected pale-green interface palette.",
-      "Do not replace sequential direction comparisons with a decorative dashboard card grid.",
-      "Do not infer a loaded webfont from the preferred family name."
+      "Do not replace sequential direction comparisons with a decorative dashboard card grid."
     ]
   }
 }

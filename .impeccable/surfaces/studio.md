@@ -1,15 +1,15 @@
-# Studio direction contract
-Mode: Operate. Code-led replacement of the rejected pale green form; no approved comp and no claim of user aesthetic approval.
+# Studio refinement contract
+Mode: Operate. User-pinned tone refinement, no direction exploration or new features.
 
 ## Thesis
-A single product studio carries photographed evidence into a concrete creative plan with minimal typing.
-## Own world
-Restrained product-catalog art direction. Cool paper canvas, navy ink, cobalt primary actions, photographic product stills, one workhorse Korean sans family. Shared navigation and source filmstrip, no dashboard metrics or card-grid scaffolding.
-## Story
-Capture → inspect evidence → enter feeling → select direction → approve/export. Direct upload remains available. Capture selection is not certified coverage. Example photography is synthetic and labeled.
-## First viewport
-Capture: left task explanation and camera/experience actions, right large photographic virtual-product still. Planning: clear task heading and product filmstrip with writing field, product evidence at right. Mobile stacks and prioritizes tasks before decorative imagery.
-## Form
-Direction seed reference seed:a9ac616776b4846c, initial own-world index 5 (product catalog). Code-led task surface, no comp fidelity requirement. Navigation, 7px control corners, restrained dividing rules, 38/34/30px responsive headings, 44px minimum primary control targets. One 200ms photo reveal, reduced-motion honored.
-## Finish line
-Desktop and 390px mobile capture/planning render; transfer images and access code; existing work choice; direct upload; reload persistence; actual AI direction response; approval/export. Camera hardware is not available for physical-turntable testing and must be disclosed. No customer imagery or secrets in public source.
+A compact demonstration tool for capture and creative planning, with only actionable instructions.
+## Reference
+Creazy public landing and signed-in studio observed 2026-11-16: Pretendard, white and light gray surfaces, near-black text, blue actions. User explicitly prefers approximate tone and manner, not exact color copying. No account information or customer imagery is used as a public design asset.
+## Changes
+Blue #316de6 with #2459c3 hover, near-black #111827, neutral canvas #f5f6f8, white input surfaces. One shared navigation and self-hosted Pretendard. Brief becomes a centered single composer; capture retains a quiet example photo only on larger screens.
+## Copy
+Remove slogans, footer, duplicated steps, generic reassurance and long implementation/limitation paragraphs. Keep instructions, actionable errors, photo provenance, AI-transfer note, confirmation of unresolved capture gaps and video-save reminder when a video exists.
+## Preserve
+Capture inference, prompt instructions, API behavior, image limits, handoff, direct upload, original evidence and export. No paid performance tests in this pass.
+## Evidence
+Typecheck/build and desktop/mobile/intermediate visual smoke checks; example capture → planning, direct example input, disclosure and responsive controls. Do not claim engine accuracy from these checks.
