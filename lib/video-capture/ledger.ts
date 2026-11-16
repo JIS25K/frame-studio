@@ -122,16 +122,20 @@ export function audit(session: VideoSession) {
     sheets,
     done,
     complete: session.clips.length > 0 && !missing,
-    open: session.gaps.filter((g) => g.status === "open").length,
+    open: session.gaps.filter(
+      (g) => g.status === "open" && g.key !== "product_correspondence",
+    ).length,
     coverage: "not-certified" as const,
   };
 }
 export function compactContext(regions: Region[]) {
-  return regions.map((r) => ({ key: r.key, label: r.label, state: r.state }));
+  return regions
+    .filter((r) => r.key !== "product_correspondence")
+    .map((r) => ({ key: r.key, label: r.label, state: r.state }));
 }
 export function targetContext(gaps: Gap[]) {
   return gaps
-    .filter((g) => g.status === "open")
+    .filter((g) => g.status === "open" && g.key !== "product_correspondence")
     .map((g) => ({
       key: g.key,
       label: g.label,

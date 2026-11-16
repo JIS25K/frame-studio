@@ -1,3 +1,4 @@
+import { correspondenceMessage } from "./handoff";
 import { decodeVideo, extractEvidence } from "./decode";
 import {
   audit,
@@ -189,14 +190,14 @@ export async function analyzeSession(
             session,
             {
               key: "product_correspondence",
-              label: "제품이 확인되지 않는 구간",
+              label: correspondenceMessage(result.productVisible).label,
               state: "unknown",
               kind: "uncertain",
               frame: sheet.first,
               box: null,
               reason: result.summary,
-              instruction:
-                "제품 전체와 이전에 확인한 특징이 함께 보이도록 다시 촬영해주세요.",
+              instruction: correspondenceMessage(result.productVisible)
+                .instruction,
             },
             e,
           );

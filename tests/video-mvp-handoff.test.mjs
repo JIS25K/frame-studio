@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {handoffFrames,correspondenceMessage} from '../lib/video-capture/handoff.ts';
+import {videoContextSchema} from '../lib/prompt-engine/video-context.ts';
+const image='data:image/jpeg;base64,/9j/AA==';
+test('MVP can hand off a baseline or uncertain photo without pretending it was verified',()=>{assert.deepEqual(handoffFrames({regions:[],baseline:null}),[]);assert.match(handoffFrames({regions:[],baseline:image})[0].description,/확인 전/);const e={image,time:3,detail:'가림',quality:'occluded',verified:false};const s={baseline:image,regions:[{key:'frame',label:'안경테',evidence:[e]}]};assert.match(handoffFrames(s)[0].description,/미확인/);assert.equal(e.verified,false);});
+test('tracking uncertainty is not a product part or a claim that visible glasses are absent',()=>{assert.match(correspondenceMessage(true).label,/같은 제품/);assert.match(correspondenceMessage(false).label,/화면 밖/);assert.equal(handoffFrames({baseline:null,regions:[{key:'product_correspondence',evidence:[{image}]}]}).length,0);});
+test('partial analysis status is carried to planning and old complete handoffs stay readable',()=>{const s={sessionId:'b53cf65e-f792-4be6-9842-90c759d47ea0',decodedFrames:1381,processedWindows:1,clips:[],regions:[],gaps:[],analysis:{complete:false,totalWindows:29,pendingClips:['video-1.mp4']}};assert.equal(videoContextSchema.parse(s).analysis.complete,false);delete s.analysis;assert.equal(videoContextSchema.safeParse(s).success,true);});

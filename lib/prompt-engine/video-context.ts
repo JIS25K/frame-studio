@@ -2,6 +2,13 @@ import { z } from "zod";
 // Text evidence retains the complete cumulative video inventory alongside visual anchors.
 export const videoContextSchema = z.object({
   sessionId: z.string().uuid(),
+  analysis: z
+    .object({
+      complete: z.boolean(),
+      totalWindows: z.number().int().nonnegative(),
+      pendingClips: z.array(z.string().max(300)).max(100),
+    })
+    .optional(),
   decodedFrames: z.number().int().nonnegative(),
   processedWindows: z.number().int().nonnegative(),
   clips: z

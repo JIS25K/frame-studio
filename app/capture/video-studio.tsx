@@ -11,6 +11,7 @@ import {
   newSession,
   type Progress,
 } from "@/lib/video-capture/engine";
+import { handoffFrames } from "@/lib/video-capture/handoff";
 import { audit } from "@/lib/video-capture/ledger";
 import { saveVideoSession, loadVideoSession } from "@/lib/video-capture/store";
 import {
@@ -34,6 +35,12 @@ const qualityLabel: Record<string, string> = {
   too_small: "작게 보임",
   uncertain: "확인 필요",
 };
+function gapLabel(g: Gap) {
+  return g.key === "product_correspondence" &&
+    g.label === "제품이 확인되지 않는 구간"
+    ? "같은 제품인지 확인이 필요한 구간"
+    : g.label;
+}
 function gapEvidence(g: Gap) {
   return g.status === "evidence_added"
     ? g.support.at(-1) || g.anchor
@@ -57,6 +64,7 @@ export default function WholeVideoStudio({
     [loaded, setLoaded] = useState(false),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
+    [handingOff, setHandingOff] = useState(false),
     [progress, setProgress] = useState<Progress | null>(null),
     [record, setRecord] = useState(false),
     [target, setTarget] = useState<Gap | null>(null),
@@ -66,7 +74,12 @@ export default function WholeVideoStudio({
     file = useRef<HTMLInputElement>(null),
     video = useRef<HTMLVideoElement>(null),
     mounted = useRef(true),
-    pendingSeek = useRef<number | null>(null);
+    pendingSeek = useRef<number | null>(null),
+    activeRun = useRef<{
+      session: VideoSession;
+      promise: Promise<void>;
+    } | null>(null),
+    handoffLock = useRef(false);
   useEffect(() => {
     mounted.current = true;
     void loadVideoSession()
@@ -137,13 +150,13 @@ export default function WholeVideoStudio({
     setTarget(null);
   }
   async function run() {
-    if (!session || busy) return;
+    if (!session || busy || handoffLock.current) return;
     setBusy(true);
     setError("");
     const controller = new AbortController();
     abort.current = controller;
     try {
-      await analyzeSession(
+      const promise = analyzeSession(
         session,
         (p) => {
           if (mounted.current) setProgress(p);
@@ -151,6 +164,8 @@ export default function WholeVideoStudio({
         render,
         controller.signal,
       );
+      activeRun.current = { session, promise };
+      await promise;
     } catch (e) {
       if (mounted.current)
         setError(
@@ -159,10 +174,30 @@ export default function WholeVideoStudio({
             : (e as Error).message,
         );
     } finally {
+      activeRun.current = null;
       if (mounted.current) {
         setBusy(false);
         render();
       }
+    }
+  }
+  async function chooseSupplement(g: Gap) {
+    if (handoffLock.current) return;
+    handoffLock.current = true;
+    setHandingOff(true);
+    try {
+      const task = activeRun.current;
+      if (task) {
+        abort.current?.abort();
+        try {
+          await task.promise;
+        } catch {}
+      }
+      setTarget(g);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } finally {
+      handoffLock.current = false;
+      if (mounted.current) setHandingOff(false);
     }
   }
   function seek(id: string, time: number) {
@@ -178,39 +213,51 @@ export default function WholeVideoStudio({
     video.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
   async function handoff() {
-    if (!session || !summary?.complete) return;
+    if (!session || handoffLock.current || !handoffFrames(session).length)
+      return;
+    handoffLock.current = true;
+    setHandingOff(true);
+    setError("");
+    const current = activeRun.current?.session || session;
     try {
-      const candidates = session.regions.flatMap((r) =>
-        r.evidence
-          .filter((e) => e.verified && e.quality === "clear")
-          .slice(0, 1)
-          .map((e) => ({
-            image: e.image,
-            at: e.time,
-            description: r.label + " · " + e.detail,
-          })),
-      );
-      const unique = candidates
-        .filter(
-          (e, i) => candidates.findIndex((x) => x.image === e.image) === i,
-        )
-        .slice(0, 24);
+      const task = activeRun.current;
+      if (task) {
+        abort.current?.abort();
+        try {
+          await task.promise;
+        } catch {
+          /* Preserve partial analysis and proceed at the user's request. */
+        }
+      }
+      const reviewAudit = audit(current);
+      const unique = handoffFrames(current);
       const packet = createHandoff({
         id: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
         reviewed: true,
         demo: false,
         videoContext: {
-          sessionId: session.id,
-          decodedFrames: summary.decoded,
-          processedWindows: summary.done,
-          clips: session.clips.map((c) => ({
+          sessionId: current.id,
+          analysis: {
+            complete: reviewAudit.complete,
+            totalWindows: reviewAudit.sheets,
+            pendingClips: current.clips
+              .filter(
+                (c) =>
+                  !c.decoded?.complete ||
+                  c.windows.some((w) => w.status !== "done"),
+              )
+              .map((c) => c.name),
+          },
+          decodedFrames: reviewAudit.decoded,
+          processedWindows: reviewAudit.done,
+          clips: current.clips.map((c) => ({
             id: c.id,
             name: c.name,
-            duration: c.decoded!.duration,
-            frames: c.decoded!.frameCount,
+            duration: c.decoded?.duration || 0,
+            frames: c.decoded?.frameCount || 0,
           })),
-          regions: session.regions.map((r) => ({
+          regions: current.regions.map((r) => ({
             key: r.key,
             label: r.label,
             state: r.state,
@@ -225,7 +272,7 @@ export default function WholeVideoStudio({
               }),
             ),
           })),
-          gaps: session.gaps.map(
+          gaps: current.gaps.map(
             ({ key, label, state, reason, instruction, status }) => ({
               key,
               label,
@@ -237,15 +284,24 @@ export default function WholeVideoStudio({
           ),
         },
         frames: unique,
-        unresolved: session.gaps
-          .filter((g) => g.status !== "evidence_added")
-          .map((g) => `${g.label}: ${g.reason}`.slice(0, 500))
-          .slice(0, 24),
+        unresolved: [
+          ...(!reviewAudit.complete
+            ? [
+                `전체 영상 분석 미완료: ${reviewAudit.done}/${reviewAudit.sheets}구간. 미처리 구간과 미확인 관찰은 확정 사실로 사용하지 마세요.`,
+              ]
+            : []),
+          ...current.gaps
+            .filter((g) => g.status !== "evidence_added")
+            .map((g) => `${g.label}: ${g.reason}`.slice(0, 500)),
+        ].slice(0, 24),
       });
       await saveHandoff(packet);
       router.push(`/prompt?capture=${packet.id}`);
     } catch (e) {
       setError((e as Error).message);
+    } finally {
+      handoffLock.current = false;
+      if (mounted.current) setHandingOff(false);
     }
   }
   function exportReport() {
@@ -323,11 +379,14 @@ export default function WholeVideoStudio({
               </p>
             </div>
             <div className={s.actions}>
-              <button disabled={busy} onClick={() => setRecord(true)}>
+              <button
+                disabled={busy || handingOff}
+                onClick={() => setRecord(true)}
+              >
                 영상 촬영{target ? " · 보충" : ""}
               </button>
               <button
-                disabled={busy}
+                disabled={busy || handingOff}
                 className={s.secondary}
                 onClick={() => file.current?.click()}
               >
@@ -537,7 +596,7 @@ export default function WholeVideoStudio({
                         </div>
                         <div>
                           <h3>
-                            {g.label}{" "}
+                            {gapLabel(g)}{" "}
                             <small>
                               {g.status === "evidence_added"
                                 ? "보충 근거 추가됨"
@@ -562,7 +621,11 @@ export default function WholeVideoStudio({
                           ) : (
                             <>
                               <p>{g.reason}</p>
-                              <p className={s.instruction}>{g.instruction}</p>
+                              <p className={s.instruction}>
+                                {g.key === "product_correspondence"
+                                  ? "같은 제품을 촬영한 것이 맞다면 현재 자료로 진행해도 좋아요. 빠진 모습이 필요할 때만 보충해주세요."
+                                  : g.instruction}
+                              </p>
                             </>
                           )}
                           {g.anchor && g.status !== "evidence_added" && (
@@ -578,20 +641,16 @@ export default function WholeVideoStudio({
                           {g.status !== "evidence_added" && (
                             <div className={s.actions}>
                               <button
-                                disabled={busy}
-                                onClick={() => {
-                                  setTarget(g);
-                                  window.scrollTo({
-                                    top: 0,
-                                    behavior: "smooth",
-                                  });
-                                }}
+                                disabled={handingOff}
+                                onClick={() => void chooseSupplement(g)}
                               >
-                                이 부분 보충하기
+                                {busy
+                                  ? "분석 멈추고 보충하기"
+                                  : "이 부분 보충하기"}
                               </button>
                               <button
                                 className={s.link}
-                                disabled={busy}
+                                disabled={busy || handingOff}
                                 onClick={() => {
                                   g.status =
                                     g.status === "deferred"
@@ -674,26 +733,29 @@ export default function WholeVideoStudio({
                 ))}
               </section>
               <footer className={s.export}>
-                <button disabled={busy} onClick={exportReport}>
+                <button disabled={busy || handingOff} onClick={exportReport}>
                   영상 분석 근거 저장
                 </button>
                 {planning && (
                   <>
                     <button
                       className={s.secondary}
-                      disabled={
-                        busy ||
-                        !summary?.complete ||
-                        !session.regions.some((r) =>
-                          r.evidence.some(
-                            (e) => e.verified && e.quality === "clear",
-                          ),
-                        )
-                      }
+                      disabled={handingOff || !handoffFrames(session).length}
                       onClick={() => void handoff()}
                     >
-                      관찰 정보와 근거로 연출 기획
+                      {handingOff
+                        ? "분석을 정리하는 중…"
+                        : summary?.complete
+                          ? "관찰 정보와 근거로 연출 기획"
+                          : "현재 자료로 기획하기"}
                     </button>
+                    {!summary?.complete && (
+                      <p className={s.note}>
+                        {handoffFrames(session).length
+                          ? "전체 분석이 끝나지 않아도 진행할 수 있어요. 진행하면 분석을 잠시 멈추고 미확인 사항을 함께 넘깁니다."
+                          : "아직 넘길 사진 근거가 없어요. 영상 분석을 시작해 기준 장면을 준비해주세요."}
+                      </p>
+                    )}
                     <p className={s.note}>
                       기획에는 전체 구간의 누적 관찰 정보·부족 항목과 대표 근거
                       사진을 함께 전달합니다. 원본 영상과 프레임 기록도 이
@@ -703,7 +765,7 @@ export default function WholeVideoStudio({
                 )}
                 <button
                   className={s.link}
-                  disabled={busy}
+                  disabled={busy || handingOff}
                   onClick={() => {
                     if (
                       confirm(
